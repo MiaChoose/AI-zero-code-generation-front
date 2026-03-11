@@ -771,11 +771,13 @@ onUnmounted(() => {
 
 <style scoped>
 #appChatPage {
-  height: calc(100vh - 72px);
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 16px 0;
-  background: transparent;
+  padding: 16px;
+  background:
+    linear-gradient(180deg, rgba(215, 255, 238, 0.5) 0%, rgba(179, 244, 221, 0.35) 45%, rgba(138, 215, 191, 0.3) 100%),
+    radial-gradient(circle at 20% 15%, rgba(45, 212, 191, 0.12) 0%, transparent 40%);
 }
 
 /* 顶部栏 */
@@ -800,7 +802,7 @@ onUnmounted(() => {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #0f172a;
 }
 
 .header-right {
@@ -827,6 +829,7 @@ onUnmounted(() => {
   box-shadow:
     0 22px 70px rgba(15, 23, 42, 0.18),
     0 0 0 1px rgba(148, 163, 184, 0.16);
+  backdrop-filter: blur(12px);
   overflow: hidden;
 }
 
@@ -864,13 +867,13 @@ onUnmounted(() => {
 }
 
 .user-message .message-content {
-  background: #14b8a6;
+  background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
   color: #ecfeff;
 }
 
 .ai-message .message-content {
-  background: #f5f5f5;
-  color: #1a1a1a;
+  background: #f1f5f9;
+  color: #0f172a;
   padding: 8px 12px;
 }
 
@@ -895,7 +898,8 @@ onUnmounted(() => {
 /* 输入区域 */
 .input-container {
   padding: 16px;
-  background: white;
+  background: rgba(255, 255, 255, 0.98);
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 .input-wrapper {
@@ -917,11 +921,12 @@ onUnmounted(() => {
   flex: 3;
   display: flex;
   flex-direction: column;
-  background: rgba(15, 23, 42, 0.96);
+  background: rgba(255, 255, 255, 0.96);
   border-radius: 20px;
   box-shadow:
-    0 22px 70px rgba(15, 23, 42, 0.35),
-    0 0 0 1px rgba(15, 23, 42, 0.6);
+    0 22px 70px rgba(15, 23, 42, 0.18),
+    0 0 0 1px rgba(148, 163, 184, 0.16);
+  backdrop-filter: blur(12px);
   overflow: hidden;
 }
 
@@ -929,15 +934,15 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 18px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.45);
-  color: #e5e7eb;
+  padding: 16px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.28);
 }
 
 .preview-header h3 {
   margin: 0;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
+  color: #0f172a;
 }
 
 .preview-actions {
@@ -957,12 +962,12 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #9ca3af;
+  color: #64748b;
 }
 
 .placeholder-icon {
-  font-size: 40px;
-  margin-bottom: 12px;
+  font-size: 48px;
+  margin-bottom: 16px;
 }
 
 .preview-loading {
@@ -971,11 +976,11 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #e5e7eb;
+  color: #64748b;
 }
 
 .preview-loading p {
-  margin-top: 12px;
+  margin-top: 16px;
 }
 
 .preview-iframe {
