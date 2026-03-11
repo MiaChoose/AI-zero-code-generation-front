@@ -68,7 +68,7 @@ const handleClose = () => {
 <style scoped>
 .deploy-success {
   text-align: center;
-  padding: 24px;
+  padding: 24px 12px 8px;
 }
 
 .success-icon {

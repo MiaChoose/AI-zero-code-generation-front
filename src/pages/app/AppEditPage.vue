@@ -276,8 +276,8 @@ onMounted(() => {
 
 <style scoped>
 #appEditPage {
-  padding: 24px;
-  max-width: 1000px;
+  padding: 24px 16px 32px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
@@ -290,20 +290,21 @@ onMounted(() => {
 
 .page-header h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 .edit-container {
-  border-radius: 8px;
+  border-radius: 20px;
 }
 
 .cover-preview {
   margin-top: 12px;
   padding: 12px;
-  border: 1px solid #e8e8e8;
-  border-radius: 6px;
-  background: #fafafa;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 12px;
+  background: rgba(248, 250, 252, 0.9);
 }
 
 .form-tip {

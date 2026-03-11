@@ -18,13 +18,26 @@ import GlobalFooter from '@/components/GlobalFooter.vue'
 
 <style scoped>
 .basic-layout {
-  background: none;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* 全局背景：以 #D7FFEE 为主的自上而下柔和渐变 */
+  background: linear-gradient(180deg, #d7ffee 0%, #b3f4dd 45%, #8ad7bf 100%);
 }
 
 .main-content {
+  flex: 1;
   width: 100%;
-  padding: 0;
-  background: none;
-  margin: 0;
+  padding: 32px 32px 40px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 16px 12px 24px;
+  }
 }
 </style>

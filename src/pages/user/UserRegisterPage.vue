@@ -85,27 +85,49 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 
 <style scoped>
 #userRegisterPage {
-  background: white;
-  max-width: 720px;
-  padding: 24px;
-  margin: 24px auto;
+  max-width: 420px;
+  margin: 48px auto;
+  padding: 32px 32px 28px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow:
+    0 24px 80px rgba(15, 23, 42, 0.16),
+    0 0 0 1px rgba(148, 163, 184, 0.18);
+  backdrop-filter: blur(18px);
 }
 
 .title {
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #0f172a;
 }
 
 .desc {
   text-align: center;
-  color: #bbb;
-  margin-bottom: 16px;
+  color: #6b7280;
+  margin-bottom: 24px;
+  font-size: 13px;
 }
 
 .tips {
-  margin-bottom: 16px;
-  color: #bbb;
-  font-size: 13px;
+  margin-bottom: 8px;
+  color: #9ca3af;
+  font-size: 12px;
   text-align: right;
+}
+
+.tips a {
+  color: #14b8a6;
+}
+
+@media (max-width: 768px) {
+  #userRegisterPage {
+    margin: 32px 12px;
+    padding: 24px 18px 20px;
+    border-radius: 18px;
+  }
 }
 </style>

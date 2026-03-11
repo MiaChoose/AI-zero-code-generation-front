@@ -155,7 +155,7 @@ onMounted(() => {
 <style scoped>
 #userManagePage {
   padding: 24px;
-  background: white;
+  background: transparent;
   margin-top: 16px;
 }
 </style>

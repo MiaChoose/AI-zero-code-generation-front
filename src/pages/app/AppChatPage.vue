@@ -771,11 +771,11 @@ onUnmounted(() => {
 
 <style scoped>
 #appChatPage {
-  height: 100vh;
+  height: calc(100vh - 72px);
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  background: #fdfdfd;
+  padding: 16px 0;
+  background: transparent;
 }
 
 /* 顶部栏 */
@@ -822,9 +822,11 @@ onUnmounted(() => {
   flex: 2;
   display: flex;
   flex-direction: column;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 20px;
+  box-shadow:
+    0 22px 70px rgba(15, 23, 42, 0.18),
+    0 0 0 1px rgba(148, 163, 184, 0.16);
   overflow: hidden;
 }
 
@@ -862,8 +864,8 @@ onUnmounted(() => {
 }
 
 .user-message .message-content {
-  background: #1890ff;
-  color: white;
+  background: #14b8a6;
+  color: #ecfeff;
 }
 
 .ai-message .message-content {
@@ -915,9 +917,11 @@ onUnmounted(() => {
   flex: 3;
   display: flex;
   flex-direction: column;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: rgba(15, 23, 42, 0.96);
+  border-radius: 20px;
+  box-shadow:
+    0 22px 70px rgba(15, 23, 42, 0.35),
+    0 0 0 1px rgba(15, 23, 42, 0.6);
   overflow: hidden;
 }
 
@@ -925,14 +929,15 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  border-bottom: 1px solid #e8e8e8;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.45);
+  color: #e5e7eb;
 }
 
 .preview-header h3 {
   margin: 0;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .preview-actions {
@@ -952,12 +957,12 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #666;
+  color: #9ca3af;
 }
 
 .placeholder-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
+  font-size: 40px;
+  margin-bottom: 12px;
 }
 
 .preview-loading {
@@ -966,11 +971,11 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #666;
+  color: #e5e7eb;
 }
 
 .preview-loading p {
-  margin-top: 16px;
+  margin-top: 12px;
 }
 
 .preview-iframe {

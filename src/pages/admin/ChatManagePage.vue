@@ -199,7 +199,7 @@ const deleteMessage = async (id: number | undefined) => {
 <style scoped>
 #chatManagePage {
   padding: 24px;
-  background: white;
+  background: transparent;
   margin-top: 16px;
 }
 

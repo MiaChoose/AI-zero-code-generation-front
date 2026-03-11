@@ -265,7 +265,7 @@ const deleteApp = async (id: number | undefined) => {
 <style scoped>
 #appManagePage {
   padding: 24px;
-  background: white;
+  background: transparent;
   margin-top: 16px;
 }
 
@@ -293,14 +293,14 @@ const deleteApp = async (id: number | undefined) => {
 }
 
 .featured-btn {
-  background: #faad14;
-  border-color: #faad14;
-  color: white;
+  background: #f97316;
+  border-color: #f97316;
+  color: #fff;
 }
 
 .featured-btn:hover {
-  background: #d48806;
-  border-color: #d48806;
+  background: #ea580c;
+  border-color: #ea580c;
 }
 
 :deep(.ant-table-tbody > tr > td) {

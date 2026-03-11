@@ -56,12 +56,12 @@ const handleViewWork = () => {
 
 <style scoped>
 .app-card {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.96);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 18px 60px rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(15, 23, 42, 0.8);
   transition:
     transform 0.3s,
     box-shadow 0.3s;
@@ -75,7 +75,7 @@ const handleViewWork = () => {
 
 .app-preview {
   height: 180px;
-  background: #f5f5f5;
+  background: radial-gradient(circle at top left, #115e59, #022c22);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,7 +91,7 @@ const handleViewWork = () => {
 
 .app-placeholder {
   font-size: 48px;
-  color: #d9d9d9;
+  color: #64748b;
 }
 
 .app-overlay {
@@ -132,7 +132,7 @@ const handleViewWork = () => {
   font-size: 16px;
   font-weight: 600;
   margin: 0 0 4px;
-  color: #1a1a1a;
+  color: #e5e7eb;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -140,7 +140,7 @@ const handleViewWork = () => {
 
 .app-author {
   font-size: 14px;
-  color: #666;
+  color: #9ca3af;
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
