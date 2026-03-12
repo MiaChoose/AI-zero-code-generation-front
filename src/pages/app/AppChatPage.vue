@@ -259,6 +259,9 @@ const messages = ref<Message[]>([])
 const userInput = ref('')
 const isGenerating = ref(false)
 const messagesContainer = ref<HTMLElement>()
+const currentEventSource = ref<EventSource | null>(null)
+const currentGenerationId = ref('')
+const STOP_STATUS_FLAG_KEY = 'app_chat_generation_stop_requested'
 
 // 对话历史相关
 const loadingHistory = ref(false)
@@ -477,25 +480,35 @@ const sendMessage = async () => {
 
 // 生成代码 - 使用 EventSource 处理流式响应
 const generateCode = async (userMessage: string, aiMessageIndex: number) => {
-  let eventSource: EventSource | null = null
   let streamCompleted = false
 
   try {
     // 获取 axios 配置的 baseURL
     const baseURL = request.defaults.baseURL || API_BASE_URL
 
+    // 为每次生成创建唯一会话 ID，避免刷新后旧停止请求误伤新会话
+    currentGenerationId.value = `${Date.now()}_${Math.random().toString(36).slice(2, 10)}`
+
     // 构建URL参数
     const params = new URLSearchParams({
       appId: appId.value || '',
       message: userMessage,
+      generationId: currentGenerationId.value,
     })
 
     const url = `${baseURL}/app/chat/gen/code?${params}`
 
+    // 先关闭之前的连接，避免并发流残留
+    if (currentEventSource.value) {
+      currentEventSource.value.close()
+      currentEventSource.value = null
+    }
+
     // 创建 EventSource 连接
-    eventSource = new EventSource(url, {
+    const eventSource = new EventSource(url, {
       withCredentials: true,
     })
+    currentEventSource.value = eventSource
 
     let fullContent = ''
 
@@ -527,7 +540,9 @@ const generateCode = async (userMessage: string, aiMessageIndex: number) => {
 
       streamCompleted = true
       isGenerating.value = false
-      eventSource?.close()
+      eventSource.close()
+      currentEventSource.value = null
+      currentGenerationId.value = ''
 
       // 延迟更新预览，确保后端已完成处理
       setTimeout(async () => {
@@ -552,11 +567,37 @@ const generateCode = async (userMessage: string, aiMessageIndex: number) => {
 
         streamCompleted = true
         isGenerating.value = false
-        eventSource?.close()
+        eventSource.close()
+        currentEventSource.value = null
+        currentGenerationId.value = ''
       } catch (parseError) {
         console.error('解析错误事件失败:', parseError, '原始数据:', event.data)
         handleError(new Error('服务器返回错误'), aiMessageIndex)
       }
+    })
+
+    // 处理取消事件（后端明确退出信号）
+    eventSource.addEventListener('cancelled', function (event: MessageEvent) {
+      if (streamCompleted) return
+      let cancelledMessage = '⏹️ 已停止生成，本次任务已退出。'
+      try {
+        const payload = JSON.parse(event.data || '{}')
+        if (payload?.message) {
+          cancelledMessage = `⏹️ ${payload.message}`
+        }
+      } catch (e) {
+        // 取消事件解析失败不影响主流程
+      }
+
+      messages.value[aiMessageIndex].content = cancelledMessage
+      messages.value[aiMessageIndex].loading = false
+      message.info('已停止生成，可继续发起新对话')
+
+      streamCompleted = true
+      isGenerating.value = false
+      eventSource.close()
+      currentEventSource.value = null
+      currentGenerationId.value = ''
     })
 
     // 处理错误
@@ -566,7 +607,9 @@ const generateCode = async (userMessage: string, aiMessageIndex: number) => {
       if (eventSource?.readyState === EventSource.CONNECTING) {
         streamCompleted = true
         isGenerating.value = false
-        eventSource?.close()
+        eventSource.close()
+        currentEventSource.value = null
+        currentGenerationId.value = ''
 
         setTimeout(async () => {
           await fetchAppInfo()
@@ -589,6 +632,59 @@ const handleError = (error: unknown, aiMessageIndex: number) => {
   messages.value[aiMessageIndex].loading = false
   message.error('生成失败，请重试')
   isGenerating.value = false
+  if (currentEventSource.value) {
+    currentEventSource.value.close()
+    currentEventSource.value = null
+  }
+  currentGenerationId.value = ''
+}
+
+/**
+ * 页面卸载阶段尽量可靠地发送停止请求：
+ * 1) 优先 sendBeacon（页面关闭时成功率更高）
+ * 2) 兜底 keepalive fetch
+ */
+const sendStopRequestOnLeave = (stopUrl: string) => {
+  let beaconSent = false
+  try {
+    if (navigator.sendBeacon) {
+      beaconSent = navigator.sendBeacon(stopUrl, new Blob([], { type: 'application/json' }))
+    }
+  } catch (e) {
+    console.warn('sendBeacon stop request failed', e)
+  }
+  if (!beaconSent) {
+    fetch(stopUrl, {
+      method: 'POST',
+      credentials: 'include',
+      keepalive: true,
+    }).catch(() => {
+      // 页面关闭阶段无需打断用户
+    })
+  }
+}
+
+/**
+ * 页面离开 / 刷新时，主动关闭 SSE 并通知后端取消生成。
+ */
+const stopGenerationOnLeave = () => {
+  if (currentEventSource.value) {
+    currentEventSource.value.close()
+    currentEventSource.value = null
+  }
+  if (!isGenerating.value || !appId.value) {
+    return
+  }
+  const baseURL = request.defaults.baseURL || API_BASE_URL
+  const params = new URLSearchParams({
+    appId: String(appId.value),
+    generationId: currentGenerationId.value,
+  })
+  const stopUrl = `${baseURL}/app/chat/stop?${params.toString()}`
+  sessionStorage.setItem(STOP_STATUS_FLAG_KEY, '1')
+  sendStopRequestOnLeave(stopUrl)
+  isGenerating.value = false
+  currentGenerationId.value = ''
 }
 
 // 更新预览
@@ -755,7 +851,13 @@ const getInputPlaceholder = () => {
 
 // 页面加载时获取应用信息
 onMounted(() => {
+  if (sessionStorage.getItem(STOP_STATUS_FLAG_KEY) === '1') {
+    message.info('已发送停止请求，生成任务正在退出')
+    sessionStorage.removeItem(STOP_STATUS_FLAG_KEY)
+  }
   fetchAppInfo()
+  window.addEventListener('beforeunload', stopGenerationOnLeave)
+  window.addEventListener('pagehide', stopGenerationOnLeave)
 
   // 监听 iframe 消息
   window.addEventListener('message', (event) => {
@@ -765,7 +867,9 @@ onMounted(() => {
 
 // 清理资源
 onUnmounted(() => {
-  // EventSource 会在组件卸载时自动清理
+  window.removeEventListener('beforeunload', stopGenerationOnLeave)
+  window.removeEventListener('pagehide', stopGenerationOnLeave)
+  stopGenerationOnLeave()
 })
 </script>
 
@@ -778,6 +882,7 @@ onUnmounted(() => {
   background:
     linear-gradient(180deg, rgba(215, 255, 238, 0.5) 0%, rgba(179, 244, 221, 0.35) 45%, rgba(138, 215, 191, 0.3) 100%),
     radial-gradient(circle at 20% 15%, rgba(45, 212, 191, 0.12) 0%, transparent 40%);
+  overflow: hidden;
 }
 
 /* 顶部栏 */
@@ -792,6 +897,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
 .code-gen-type-tag {
@@ -803,6 +909,10 @@ onUnmounted(() => {
   font-size: 18px;
   font-weight: 600;
   color: #0f172a;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .header-right {
@@ -813,6 +923,7 @@ onUnmounted(() => {
 /* 主要内容区域 */
 .main-content {
   flex: 1;
+  min-width: 0;
   display: flex;
   gap: 16px;
   padding: 8px;
@@ -822,6 +933,7 @@ onUnmounted(() => {
 /* 左侧对话区域 */
 .chat-section {
   flex: 2;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   background: rgba(255, 255, 255, 0.96);
@@ -837,6 +949,7 @@ onUnmounted(() => {
   flex: 0.9;
   padding: 16px;
   overflow-y: auto;
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
@@ -860,10 +973,13 @@ onUnmounted(() => {
 
 .message-content {
   max-width: 70%;
+  min-width: 0;
   padding: 12px 16px;
   border-radius: 12px;
   line-height: 1.5;
   word-wrap: break-word;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .user-message .message-content {
@@ -919,6 +1035,7 @@ onUnmounted(() => {
 /* 右侧预览区域 */
 .preview-section {
   flex: 3;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   background: rgba(255, 255, 255, 0.96);
@@ -952,6 +1069,7 @@ onUnmounted(() => {
 
 .preview-content {
   flex: 1;
+  min-width: 0;
   position: relative;
   overflow: hidden;
 }
