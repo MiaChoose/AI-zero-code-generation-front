@@ -3,7 +3,7 @@
     <div class="footer-content">
       <p class="copyright">
         <a
-          href="#"
+          href="https://github.com/MiaChoose"
           target="_blank"
           rel="noopener noreferrer"
           class="author-link"
