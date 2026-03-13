@@ -8,7 +8,7 @@
           rel="noopener noreferrer"
           class="author-link"
         >
-          AI-zero-code-generation
+          AI-zero-code-generation @MiaChoose
         </a>
       </p>
     </div>

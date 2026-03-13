@@ -56,7 +56,7 @@ const handleViewWork = () => {
 
 <style scoped>
 .app-card {
-  background: rgba(15, 23, 42, 0.96);
+  background: rgba(4, 5, 5, 0.96);
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 18px 60px rgba(15, 23, 42, 0.55);

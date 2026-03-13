@@ -309,6 +309,11 @@ declare namespace API {
     checkPassword?: string
   }
 
+  type UserProfileUpdateRequest = {
+    userName?: string
+    userAvatar?: string
+  }
+
   type UserUpdateRequest = {
     id?: number
     userName?: string
