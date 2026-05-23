@@ -132,86 +132,49 @@ async function handleSubmit() {
 
 <style scoped>
 .user-modify-page {
-  min-height: calc(100vh - 64px);
-  padding: 48px 24px;
-  background: linear-gradient(180deg, #d7ffee 0%, #b3f4dd 45%, #8ad7bf 100%);
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--space-12) var(--space-4);
 }
 
 .modify-card {
-  max-width: 420px;
-  margin: 0 auto;
-  padding: 40px 40px 36px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.04),
-    0 6px 24px rgba(15, 23, 42, 0.08);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(34, 211, 238, 0.12);
+  width: 100%;
+  max-width: 480px;
+  padding: var(--space-10);
+  border-radius: var(--radius-3xl);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-elevated);
 }
 
 .title {
   text-align: center;
-  margin-bottom: 6px;
-  font-size: 20px;
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-size-xl);
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: #1e293b;
+  color: var(--color-text-primary);
 }
 
 .desc {
   text-align: center;
-  color: #64748b;
-  margin-bottom: 28px;
-  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-8);
+  font-size: var(--font-size-base);
 }
 
 .avatar-upload-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: var(--space-3);
 }
 
 .avatar-preview {
-  border: 2px solid rgba(34, 211, 238, 0.2);
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
-}
-
-.avatar-actions :deep(.ant-btn-primary) {
-  background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-}
-
-.form-item-actions :deep(.ant-btn-primary) {
-  background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-}
-
-.form-item-actions :deep(.ant-btn:not(.ant-btn-primary)) {
-  border-radius: 8px;
-  border-color: rgba(20, 184, 166, 0.35);
-  color: #0f766e;
-}
-
-.form-item-actions :deep(.ant-btn:not(.ant-btn-primary):hover) {
-  border-color: #14b8a6;
-  color: #0d9488;
-}
-
-.input-nickname :deep(.ant-input) {
-  border-radius: 8px;
-  border-color: rgba(148, 163, 184, 0.35);
-}
-
-.input-nickname :deep(.ant-input:hover),
-.input-nickname :deep(.ant-input:focus) {
-  border-color: rgba(20, 184, 166, 0.5);
-  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.1);
+  border: 2px solid var(--color-primary-soft);
+  box-shadow: var(--shadow-card);
 }
 
 .avatar-actions {
@@ -221,11 +184,10 @@ async function handleSubmit() {
 
 @media (max-width: 768px) {
   .user-modify-page {
-    padding: 32px 16px;
+    padding: var(--space-8) var(--space-3);
   }
   .modify-card {
-    padding: 28px 24px 28px;
-    border-radius: 16px;
+    padding: var(--space-6);
   }
 }
 </style>

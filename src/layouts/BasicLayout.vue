@@ -21,23 +21,41 @@ import GlobalFooter from '@/components/GlobalFooter.vue'
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  /* 全局背景：以 #D7FFEE 为主的自上而下柔和渐变 */
-  background: linear-gradient(180deg, #d7ffee 0%, #b3f4dd 45%, #8ad7bf 100%);
+  /* 薄荷云背景 + 半透明白罩，营造卡片漂浮观感 */
+  background: var(--gradient-mint);
+  position: relative;
+}
+
+.basic-layout::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.basic-layout :deep(> *) {
+  position: relative;
+  z-index: 1;
 }
 
 .main-content {
   flex: 1;
   width: 100%;
-  padding: 32px 32px 40px;
+  padding: var(--space-8) var(--space-8) var(--space-10);
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  background: transparent;
 }
 
 @media (max-width: 768px) {
   .main-content {
-    padding: 16px 12px 24px;
+    padding: var(--space-4) var(--space-3) var(--space-6);
   }
 }
 </style>

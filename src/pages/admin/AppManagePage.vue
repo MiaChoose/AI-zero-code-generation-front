@@ -255,21 +255,26 @@ const deleteApp = async (id: number | undefined) => {
 
 <style scoped>
 #appManagePage {
-  padding: 24px;
-  background: transparent;
-  margin-top: 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
 }
 
 .no-cover {
   width: 80px;
   height: 60px;
-  background: #f5f5f5;
+  background: var(--color-surface-muted);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #999;
-  font-size: 12px;
-  border-radius: 4px;
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-xs);
+  border-radius: var(--radius-sm);
 }
 
 .prompt-text {
@@ -280,21 +285,36 @@ const deleteApp = async (id: number | undefined) => {
 }
 
 .text-gray {
-  color: #999;
+  color: var(--color-text-tertiary);
 }
 
 .featured-btn {
-  background: #f97316;
-  border-color: #f97316;
+  background: var(--color-warning);
+  border-color: var(--color-warning);
   color: #fff;
 }
 
 .featured-btn:hover {
-  background: #ea580c;
-  border-color: #ea580c;
+  background: #d97706;
+  border-color: #d97706;
 }
 
-:deep(.ant-table-tbody > tr > td) {
+#appManagePage :deep(.ant-table-thead > tr > th) {
+  background: var(--color-surface-muted);
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-border);
+}
+
+#appManagePage :deep(.ant-table-tbody > tr > td) {
   vertical-align: middle;
+}
+
+#appManagePage :deep(.ant-table-tbody > tr:hover > td) {
+  background: var(--color-primary-bg) !important;
+}
+
+#appManagePage :deep(.ant-divider-horizontal) {
+  margin: var(--space-4) 0;
 }
 </style>

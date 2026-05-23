@@ -195,9 +195,14 @@ const deleteMessage = async (id: number | undefined) => {
 
 <style scoped>
 #chatManagePage {
-  padding: 24px;
-  background: transparent;
-  margin-top: 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
 }
 
 .message-text {
@@ -207,7 +212,22 @@ const deleteMessage = async (id: number | undefined) => {
   white-space: nowrap;
 }
 
-:deep(.ant-table-tbody > tr > td) {
+#chatManagePage :deep(.ant-table-thead > tr > th) {
+  background: var(--color-surface-muted);
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-border);
+}
+
+#chatManagePage :deep(.ant-table-tbody > tr > td) {
   vertical-align: middle;
+}
+
+#chatManagePage :deep(.ant-table-tbody > tr:hover > td) {
+  background: var(--color-primary-bg) !important;
+}
+
+#chatManagePage :deep(.ant-divider-horizontal) {
+  margin: var(--space-4) 0;
 }
 </style>

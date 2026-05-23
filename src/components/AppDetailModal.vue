@@ -89,28 +89,28 @@ const handleDelete = () => {
 
 <style scoped>
 .app-detail-content {
-  padding: 8px 0;
+  padding: var(--space-2) 0;
 }
 
 .app-basic-info {
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 
 .info-item {
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
 }
 
 .info-label {
   width: 80px;
-  color: #9ca3af;
-  font-size: 14px;
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-base);
   flex-shrink: 0;
 }
 
 .app-actions {
-  padding-top: 16px;
-  border-top: 1px solid #e5e7eb;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-divider);
 }
 </style>

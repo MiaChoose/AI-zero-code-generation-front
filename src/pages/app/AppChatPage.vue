@@ -61,9 +61,10 @@
               </div>
               <div class="message-content">
                 <MarkdownRenderer v-if="message.content" :content="message.content" />
-                <div v-if="message.loading" class="loading-indicator">
-                  <a-spin size="small" />
-                  <span>AI 正在思考...</span>
+                <div v-if="message.loading" class="typing-indicator" aria-label="AI 正在思考">
+                  <span class="dot" />
+                  <span class="dot" />
+                  <span class="dot" />
                 </div>
               </div>
             </div>
@@ -137,9 +138,7 @@
                 :loading="isGenerating"
                 :disabled="!isOwner"
               >
-                <template #icon>
-                  <SendOutlined />
-                </template>
+                发送
               </a-button>
             </div>
           </div>
@@ -874,14 +873,13 @@ onUnmounted(() => {
 
 <style scoped>
 #appChatPage {
-  height: 100vh;
+  height: calc(100vh - 56px - 41px); /* viewport - header - footer */
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  background:
-    linear-gradient(180deg, rgba(215, 255, 238, 0.5) 0%, rgba(179, 244, 221, 0.35) 45%, rgba(138, 215, 191, 0.3) 100%),
-    radial-gradient(circle at 20% 15%, rgba(45, 212, 191, 0.12) 0%, transparent 40%);
+  padding: var(--space-4);
+  box-sizing: border-box;
   overflow: hidden;
+  width: 100%;
 }
 
 /* 顶部栏 */
@@ -889,25 +887,29 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
+  padding: var(--space-2) var(--space-4) var(--space-3);
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   min-width: 0;
 }
 
 .code-gen-type-tag {
-  font-size: 12px;
+  font-size: var(--font-size-xs);
+  border-radius: var(--radius-full);
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+  border-color: var(--color-primary-soft);
 }
 
 .app-name {
   margin: 0;
-  font-size: 18px;
+  font-size: var(--font-size-lg);
   font-weight: 600;
-  color: #0f172a;
+  color: var(--color-text-primary);
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -916,133 +918,252 @@ onUnmounted(() => {
 
 .header-right {
   display: flex;
-  gap: 12px;
+  gap: var(--space-2);
 }
 
-/* 主要内容区域 */
+/* 主内容区 */
 .main-content {
   flex: 1;
-  min-width: 0;
+  min-height: 0;
   display: flex;
-  gap: 16px;
-  padding: 8px;
+  gap: var(--space-4);
   overflow: hidden;
 }
 
-/* 左侧对话区域 */
+/* 左侧对话区 */
 .chat-section {
-  flex: 2;
-  min-width: 0;
+  flex: 0 0 42%;
+  min-width: 360px;
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.96);
-  border-radius: 20px;
-  box-shadow:
-    0 22px 70px rgba(15, 23, 42, 0.18),
-    0 0 0 1px rgba(148, 163, 184, 0.16);
-  backdrop-filter: blur(12px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
 }
 
 .messages-container {
-  flex: 0.9;
-  padding: 16px;
+  flex: 1;
+  min-height: 0;
+  padding: var(--space-5) var(--space-5);
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
 .message-item {
-  margin-bottom: 12px;
+  margin-bottom: var(--space-5);
+}
+
+.message-item:last-child {
+  margin-bottom: 0;
+}
+
+.user-message,
+.ai-message {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
 }
 
 .user-message {
-  display: flex;
   justify-content: flex-end;
-  align-items: flex-start;
-  gap: 8px;
 }
 
 .ai-message {
-  display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.message-content {
-  max-width: 70%;
-  min-width: 0;
-  padding: 12px 16px;
-  border-radius: 12px;
-  line-height: 1.5;
-  word-wrap: break-word;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.user-message .message-content {
-  background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
-  color: #ecfeff;
-}
-
-.ai-message .message-content {
-  background: #f1f5f9;
-  color: #0f172a;
-  padding: 8px 12px;
 }
 
 .message-avatar {
   flex-shrink: 0;
 }
 
-.loading-indicator {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #666;
+.message-avatar :deep(.ant-avatar) {
+  width: 32px;
+  height: 32px;
 }
 
-/* 加载更多按钮 */
+/* 气泡 */
+.message-content {
+  max-width: 70%;
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-xl);
+  line-height: var(--line-height-relaxed);
+  font-size: var(--font-size-base);
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.user-message .message-content {
+  background: var(--color-bubble-user-bg);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-bubble-user-border);
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+.ai-message .message-content {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-bottom-left-radius: var(--radius-sm);
+}
+
+/* AI 正在思考：3 点跳动 */
+.typing-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.typing-indicator .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text-tertiary);
+  animation: dot-bounce 1.2s infinite ease-in-out;
+}
+
+.typing-indicator .dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.typing-indicator .dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes dot-bounce {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  40% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+/* 加载更多 */
 .load-more-container {
   text-align: center;
-  padding: 8px 0;
-  margin-bottom: 16px;
+  padding: var(--space-2) 0;
+  margin-bottom: var(--space-3);
 }
 
-/* 输入区域 */
+/* 选中元素提示 */
+.selected-element-alert {
+  margin: 0 var(--space-5) var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+.selected-element-info {
+  line-height: var(--line-height-normal);
+}
+
+.element-header {
+  margin-bottom: var(--space-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  align-items: baseline;
+}
+
+.element-tag {
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.element-id {
+  color: var(--color-success);
+}
+
+.element-class {
+  color: var(--color-warning);
+}
+
+.element-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.element-item {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.element-selector-code {
+  font-family: 'Monaco', 'Menlo', monospace;
+  background: var(--color-surface-muted);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: var(--font-size-xs);
+  color: var(--color-error);
+  border: 1px solid var(--color-border);
+}
+
+/* 输入区 */
 .input-container {
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.98);
-  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  border-top: 1px solid var(--color-divider);
+  background: var(--color-surface);
 }
 
 .input-wrapper {
   position: relative;
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
-.input-wrapper .ant-input {
-  padding-right: 50px;
+.input-wrapper:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-focus-ring);
+  background: var(--color-surface);
+}
+
+.input-wrapper :deep(.ant-input) {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: var(--space-3) 56px var(--space-3) var(--space-4);
+  resize: none;
+}
+
+.input-wrapper :deep(.ant-input:focus) {
+  box-shadow: none;
 }
 
 .input-actions {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
+  bottom: var(--space-2);
+  right: var(--space-2);
 }
 
-/* 右侧预览区域 */
+.input-actions :deep(.ant-btn) {
+  border-radius: var(--radius-sm);
+}
+
+/* 右侧预览区 */
 .preview-section {
-  flex: 3;
+  flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.96);
-  border-radius: 20px;
-  box-shadow:
-    0 22px 70px rgba(15, 23, 42, 0.18),
-    0 0 0 1px rgba(148, 163, 184, 0.16);
-  backdrop-filter: blur(12px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
 }
 
@@ -1050,20 +1171,22 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.28);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--color-divider);
+  height: 52px;
+  flex-shrink: 0;
 }
 
 .preview-header h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: var(--font-size-base);
   font-weight: 600;
-  color: #0f172a;
+  color: var(--color-text-primary);
 }
 
 .preview-actions {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .preview-content {
@@ -1071,139 +1194,81 @@ onUnmounted(() => {
   min-width: 0;
   position: relative;
   overflow: hidden;
+  background: var(--color-surface-muted);
 }
 
-.preview-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: #64748b;
-}
-
-.placeholder-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
-}
-
+.preview-placeholder,
 .preview-loading {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #64748b;
+  color: var(--color-text-tertiary);
+  gap: var(--space-3);
+}
+
+.placeholder-icon {
+  font-size: 48px;
+  opacity: 0.6;
 }
 
 .preview-loading p {
-  margin-top: 16px;
+  margin: 0;
 }
 
 .preview-iframe {
   width: 100%;
   height: 100%;
   border: none;
+  background: var(--color-surface);
 }
 
-.selected-element-alert {
-  margin: 0 16px;
+/* 编辑模式按钮 */
+.edit-mode-active {
+  color: var(--color-error) !important;
 }
 
-/* 响应式设计 */
+/* 响应式 */
 @media (max-width: 1024px) {
+  #appChatPage {
+    height: auto;
+    min-height: calc(100vh - 56px - 41px);
+  }
   .main-content {
     flex-direction: column;
   }
-
-  .chat-section,
+  .chat-section {
+    flex: none;
+    min-width: 0;
+    height: 60vh;
+  }
   .preview-section {
     flex: none;
-    height: 50vh;
+    height: 60vh;
+  }
+  .message-content {
+    max-width: 85%;
   }
 }
 
 @media (max-width: 768px) {
+  #appChatPage {
+    padding: var(--space-2);
+  }
   .header-bar {
-    padding: 12px 16px;
+    padding: var(--space-2);
+    flex-wrap: wrap;
+    gap: var(--space-2);
   }
-
   .app-name {
-    font-size: 16px;
+    font-size: var(--font-size-md);
   }
-
+  .header-right {
+    flex-wrap: wrap;
+  }
   .main-content {
-    padding: 8px;
-    gap: 8px;
-  }
-
-  .message-content {
-    max-width: 85%;
-  }
-
-  /* 选中元素信息样式 */
-  .selected-element-alert {
-    margin: 0 16px;
-  }
-
-  .selected-element-info {
-    line-height: 1.4;
-  }
-
-  .element-header {
-    margin-bottom: 8px;
-  }
-
-  .element-details {
-    margin-top: 8px;
-  }
-
-  .element-item {
-    margin-bottom: 4px;
-    font-size: 13px;
-  }
-
-  .element-item:last-child {
-    margin-bottom: 0;
-  }
-
-  .element-tag {
-    font-family: 'Monaco', 'Menlo', monospace;
-    font-size: 14px;
-    font-weight: 600;
-    color: #007bff;
-  }
-
-  .element-id {
-    color: #28a745;
-    margin-left: 4px;
-  }
-
-  .element-class {
-    color: #ffc107;
-    margin-left: 4px;
-  }
-
-  .element-selector-code {
-    font-family: 'Monaco', 'Menlo', monospace;
-    background: #f6f8fa;
-    padding: 2px 4px;
-    border-radius: 3px;
-    font-size: 12px;
-    color: #d73a49;
-    border: 1px solid #e1e4e8;
-  }
-
-  /* 编辑模式按钮样式 */
-  .edit-mode-active {
-    background-color: #52c41a !important;
-    border-color: #52c41a !important;
-    color: white !important;
-  }
-
-  .edit-mode-active:hover {
-    background-color: #73d13d !important;
-    border-color: #73d13d !important;
+    gap: var(--space-2);
   }
 }
 </style>

@@ -1,55 +1,42 @@
 <template>
   <a-layout-footer class="footer">
-    <div class="footer-content">
-      <p class="copyright">
-        <a
-          href="https://github.com/MiaChoose"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="author-link"
-        >
-          AI-zero-code-generation @MiaChoose
-        </a>
-      </p>
-    </div>
+    <p class="copyright">
+      <a
+        href="https://github.com/MiaChoose"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="author-link"
+      >
+        AI-zero-code-generation © MiaChoose
+      </a>
+    </p>
   </a-layout-footer>
 </template>
 
-<script setup lang="ts">
-// 无需额外的响应式数据
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 .footer {
-  background: transparent;
+  background: var(--color-surface);
   text-align: center;
-  padding: 16px 24px 20px;
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 12px 16px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
-  backdrop-filter: blur(18px);
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-border);
 }
 
 .copyright {
   margin: 0;
-  color: #666;
-  font-size: 13px;
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.04em;
 }
 
 .author-link {
-  color: #0f766e;
+  color: var(--color-text-tertiary);
   text-decoration: none;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  transition: color 0.2s;
 }
 
 .author-link:hover {
-  color: #14b8a6;
+  color: var(--color-primary);
 }
 </style>

@@ -56,46 +56,33 @@ const handleViewWork = () => {
 
 <style scoped>
 .app-card {
-  background: rgba(255, 255, 255, 0.92);
-  border-radius: 16px;
+  background: var(--color-surface);
+  border-radius: var(--radius-2xl);
   overflow: hidden;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.04),
-    0 6px 24px rgba(15, 23, 42, 0.08);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(34, 211, 238, 0.12);
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  transition: all 0.25s ease;
   cursor: pointer;
 }
 
 .app-card:hover {
   transform: translateY(-4px);
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.06),
-    0 12px 40px rgba(15, 23, 42, 0.12);
-  border-color: rgba(34, 211, 238, 0.22);
+  border-color: var(--color-primary-soft);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .app-card--featured {
-  border-color: rgba(20, 184, 166, 0.2);
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.04),
-    0 6px 24px rgba(20, 184, 166, 0.12);
+  border-color: var(--color-primary-soft);
 }
 
 .app-card--featured:hover {
-  border-color: rgba(20, 184, 166, 0.35);
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.06),
-    0 12px 40px rgba(20, 184, 166, 0.18);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-primary);
 }
 
 .app-preview {
   height: 180px;
-  background: linear-gradient(145deg, #d7ffee 0%, #b3f4dd 50%, #99f6e4 100%);
+  background: linear-gradient(145deg, #d7ffee 0%, #b3f4dd 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -117,14 +104,13 @@ const handleViewWork = () => {
 
 .app-placeholder-icon {
   font-size: 48px;
-  opacity: 0.85;
-  filter: grayscale(0.1);
+  opacity: 0.7;
 }
 
 .app-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
@@ -137,30 +123,12 @@ const handleViewWork = () => {
   opacity: 1;
 }
 
-.app-overlay .ant-btn-primary {
-  background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-}
-
-.app-overlay .ant-btn-default {
-  border-radius: 8px;
-  border-color: rgba(20, 184, 166, 0.4);
-  color: #0f766e;
-}
-
-.app-overlay .ant-btn-default:hover {
-  border-color: #14b8a6;
-  color: #0d9488;
-}
-
 .app-info {
-  padding: 14px 16px;
+  padding: var(--space-3) var(--space-4);
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.6);
+  gap: var(--space-3);
+  border-top: 1px solid var(--color-divider);
 }
 
 .app-info-left {
@@ -173,10 +141,10 @@ const handleViewWork = () => {
 }
 
 .app-title {
-  font-size: 15px;
+  font-size: var(--font-size-md);
   font-weight: 600;
   margin: 0 0 2px;
-  color: #1e293b;
+  color: var(--color-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -184,8 +152,8 @@ const handleViewWork = () => {
 }
 
 .app-author {
-  font-size: 13px;
-  color: #64748b;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;

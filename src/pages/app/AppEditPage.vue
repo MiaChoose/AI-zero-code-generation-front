@@ -273,49 +273,67 @@ onMounted(() => {
 
 <style scoped>
 #appEditPage {
-  padding: 24px 16px 32px;
+  padding: var(--space-6) var(--space-4) var(--space-8);
   max-width: 960px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .page-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
 }
 
 .page-header h1 {
   margin: 0;
-  font-size: 22px;
+  font-size: var(--font-size-xl);
   font-weight: 600;
-  letter-spacing: 0.03em;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
 }
 
 .edit-container {
-  border-radius: 20px;
+  border-radius: var(--radius-2xl);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
 }
 
 .cover-preview {
-  margin-top: 12px;
-  padding: 12px;
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  border-radius: 12px;
-  background: rgba(248, 250, 252, 0.9);
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
 }
 
 .form-tip {
-  font-size: 12px;
-  color: #999;
-  margin-top: 4px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  margin-top: var(--space-1);
 }
 
-:deep(.ant-card-head) {
-  background: #fafafa;
+#appEditPage :deep(.ant-card) {
+  border: none;
+  box-shadow: none;
+  background: transparent;
 }
 
-:deep(.ant-descriptions-item-label) {
-  background: #fafafa;
+#appEditPage :deep(.ant-card-head) {
+  background: transparent;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+#appEditPage :deep(.ant-card-head-title) {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+#appEditPage :deep(.ant-descriptions-item-label) {
+  background: var(--color-surface-muted);
+  color: var(--color-text-secondary);
   font-weight: 500;
 }
 </style>
