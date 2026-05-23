@@ -232,12 +232,9 @@ const handleSubmit = async () => {
       message.success('修改成功')
       // 重新获取应用信息
       await fetchAppInfo()
-    } else {
-      message.error('修改失败：' + res.data.message)
     }
   } catch (error) {
     console.error('修改失败：', error)
-    message.error('修改失败')
   } finally {
     submitting.value = false
   }

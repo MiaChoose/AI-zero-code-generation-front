@@ -94,8 +94,6 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
       path: '/user/login',
       replace: true,
     })
-  } else {
-    message.error('注册失败，' + res.data.message)
   }
 }
 </script>

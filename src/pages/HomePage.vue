@@ -61,12 +61,9 @@ const createApp = async () => {
       // 跳转到对话页面，确保ID是字符串类型
       const appId = String(res.data.data)
       await router.push(`/app/chat/${appId}`)
-    } else {
-      message.error('创建失败：' + res.data.message)
     }
   } catch (error) {
     console.error('创建应用失败：', error)
-    message.error('创建失败，请重试')
   } finally {
     creating.value = false
   }

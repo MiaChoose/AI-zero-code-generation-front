@@ -2,8 +2,8 @@ import { useLoginUserStore } from '@/stores/loginUser'
 import { message } from 'ant-design-vue'
 import router from '@/router'
 
-// 是否为首次获取登录用户
-let firstFetchLoginUser = true
+// 是否已经向后端确认过登录态（无论已登录或未登录）
+let loginStateResolved = false
 
 /**
  * 全局权限校验
@@ -11,11 +11,14 @@ let firstFetchLoginUser = true
 router.beforeEach(async (to, from, next) => {
   const loginUserStore = useLoginUserStore()
   let loginUser = loginUserStore.loginUser
-  // 确保页面刷新，首次加载时，能够等后端返回用户信息后再校验权限
-  if (firstFetchLoginUser) {
-    await loginUserStore.fetchLoginUser()
+  // 首次进入或前一次拉取失败时，等待后端返回再做权限判定
+  // 这样在请求超时/网络异常恢复后，下一次导航仍能正确判定登录态
+  if (!loginStateResolved) {
+    const ok = await loginUserStore.fetchLoginUser()
     loginUser = loginUserStore.loginUser
-    firstFetchLoginUser = false
+    if (ok) {
+      loginStateResolved = true
+    }
   }
   const toUrl = to.fullPath
   if (toUrl.startsWith('/admin')) {

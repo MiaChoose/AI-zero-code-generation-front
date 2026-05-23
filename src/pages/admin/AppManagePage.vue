@@ -173,12 +173,9 @@ const fetchData = async () => {
     if (res.data.data) {
       data.value = res.data.data.records ?? []
       total.value = res.data.data.totalRow ?? 0
-    } else {
-      message.error('获取数据失败，' + res.data.message)
     }
   } catch (error) {
     console.error('获取数据失败：', error)
-    message.error('获取数据失败')
   }
 }
 
@@ -233,12 +230,9 @@ const toggleFeatured = async (app: API.AppVO) => {
       message.success(newPriority === 99 ? '已设为精选' : '已取消精选')
       // 刷新数据
       fetchData()
-    } else {
-      message.error('操作失败：' + res.data.message)
     }
   } catch (error) {
     console.error('操作失败：', error)
-    message.error('操作失败')
   }
 }
 
@@ -252,12 +246,9 @@ const deleteApp = async (id: number | undefined) => {
       message.success('删除成功')
       // 刷新数据
       fetchData()
-    } else {
-      message.error('删除失败：' + res.data.message)
     }
   } catch (error) {
     console.error('删除失败：', error)
-    message.error('删除失败')
   }
 }
 </script>

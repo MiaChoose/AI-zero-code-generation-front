@@ -133,12 +133,9 @@ const fetchData = async () => {
     if (res.data.data) {
       data.value = res.data.data.records ?? []
       total.value = res.data.data.totalRow ?? 0
-    } else {
-      message.error('获取数据失败，' + res.data.message)
     }
   } catch (error) {
     console.error('获取数据失败：', error)
-    message.error('获取数据失败')
   }
 }
 

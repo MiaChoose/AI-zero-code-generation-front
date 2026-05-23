@@ -101,8 +101,6 @@ const fetchData = async () => {
   if (res.data.data) {
     data.value = res.data.data.records ?? []
     total.value = res.data.data.totalRow ?? 0
-  } else {
-    message.error('获取数据失败，' + res.data.message)
   }
 }
 
@@ -132,7 +130,7 @@ const doSearch = () => {
 }
 
 // 删除数据
-const doDelete = async (id: string) => {
+const doDelete = async (id: number) => {
   if (!id) {
     return
   }
@@ -141,8 +139,6 @@ const doDelete = async (id: string) => {
     message.success('删除成功')
     // 刷新数据
     fetchData()
-  } else {
-    message.error('删除失败')
   }
 }
 

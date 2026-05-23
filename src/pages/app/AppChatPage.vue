@@ -223,7 +223,11 @@ import { listAppChatHistory } from '@/api/chatHistoryController'
 import { CodeGenTypeEnum, formatCodeGenType } from '@/utils/codeGenTypes'
 import request from '@/request'
 
-import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
+import { defineAsyncComponent } from 'vue'
+
+// 异步加载 Markdown 渲染器：把 markdown-it / highlight.js 抽到独立 chunk，
+// 仅在用户进入应用对话页且有消息时才请求，缩小首屏体积
+const MarkdownRenderer = defineAsyncComponent(() => import('@/components/MarkdownRenderer.vue'))
 import AppDetailModal from '@/components/AppDetailModal.vue'
 import DeploySuccessModal from '@/components/DeploySuccessModal.vue'
 import aiAvatar from '@/assets/logo.png'
@@ -759,12 +763,9 @@ const deployApp = async () => {
       deployUrl.value = res.data.data
       deployModalVisible.value = true
       message.success('部署成功')
-    } else {
-      message.error('部署失败：' + res.data.message)
     }
   } catch (error) {
     console.error('部署失败：', error)
-    message.error('部署失败，请重试')
   } finally {
     deploying.value = false
   }
@@ -811,8 +812,6 @@ const deleteApp = async () => {
       message.success('删除成功')
       appDetailVisible.value = false
       router.push('/')
-    } else {
-      message.error('删除失败：' + res.data.message)
     }
   } catch (error) {
     console.error('删除失败：', error)

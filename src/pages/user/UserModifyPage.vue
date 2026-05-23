@@ -69,7 +69,6 @@ import { message } from 'ant-design-vue'
 import { UploadOutlined } from '@ant-design/icons-vue'
 import { useLoginUserStore } from '@/stores/loginUser'
 import { updateUserProfile, uploadUserAvatar } from '@/api/userController'
-import type { API } from '@/api/typings'
 
 const router = useRouter()
 const loginUserStore = useLoginUserStore()
@@ -106,16 +105,10 @@ function beforeAvatarUpload(file: File) {
 }
 
 async function uploadAvatar(file: File) {
-  try {
-    const res = await uploadUserAvatar(file)
-    if (res.data.code === 0 && res.data.data) {
-      formState.userAvatar = res.data.data
-      message.success('头像上传成功')
-    } else {
-      message.error('头像上传失败，' + (res.data.message || ''))
-    }
-  } catch (e: any) {
-    message.error('头像上传失败')
+  const res = await uploadUserAvatar(file)
+  if (res.data.code === 0 && res.data.data) {
+    formState.userAvatar = res.data.data
+    message.success('头像上传成功')
   }
 }
 
@@ -130,11 +123,7 @@ async function handleSubmit() {
       loginUserStore.setLoginUser(res.data.data)
       message.success('保存成功')
       router.push('/')
-    } else {
-      message.error('保存失败，' + (res.data.message || ''))
     }
-  } catch (e: any) {
-    message.error('保存失败')
   } finally {
     submitting.value = false
   }
